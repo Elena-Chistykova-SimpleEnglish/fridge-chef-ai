@@ -20,21 +20,20 @@ export default async function handler(req, res) {
         "X-Title": "Fridge Chef AI"
       },
       body: JSON.stringify({
-        // Ровно 3 самые стабильные бесплатные модели
         models: [
-          "meta-llama/llama-3.2-3b-instruct:free",
-          "google/gemma-2-9b-it:free",
-          "qwen/qwen-2.5-7b-instruct:free"
+          "deepseek/deepseek-chat:free",
+          "qwen/qwen-2.5-7b-instruct:free",
+          "openrouter/free"
         ],
         messages: [
           { 
             role: "system", 
-            content: "You are a concise chef. Provide recipes clearly, directly, and without unnecessary fluff." 
+            content: "You are Chef Oliver, a warm and helpful home chef. Answer clearly and concisely." 
           },
           { role: "user", content: prompt }
         ],
         temperature: 0.6,
-        max_tokens: 700
+        max_tokens: 750
       })
     });
 
