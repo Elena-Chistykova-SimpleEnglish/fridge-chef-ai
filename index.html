@@ -199,10 +199,16 @@
       welcome: "Приветствую! Заглянули в холодильник и не знаете, что приготовить? С удовольствием подскажу пару домашних идей.\n\nКакое блюдо приготовим?",
       btn1: "🍲 Первое блюдо",
       btn2: "🍛 Второе блюдо",
-      btn3: "🥗 Вегетарианское (строго)",
+      btn3: "🥗 Вегетарианское",
+      btn4: "🍰 Десерт / Выпечка",
       selectedMsg: "Отличный выбор: ",
       promptMsg: "Напишите от 3 до 5 основных ингредиентов, которые есть под рукой:",
-      placeholder: "Например: тофу, брокколи, шампиньоны, рис...",
+      placeholders: {
+        soup: "Например: курица, картофель, лук, вермишель...",
+        main: "Например: фарш, макароны, томаты, чеснок...",
+        vegetarian: "Например: кабачок, тофу, рис, шпинат...",
+        dessert: "Например: яблоки, мука, яйца, корица, творог..."
+      },
       waiting: "🥄 Уже нарезаем идеи... Подбираю 3 рецепта до 1 часа.",
       reset: "🔄 Выбрать другую категорию",
       toggleBtn: "🇬🇧 English"
@@ -214,9 +220,15 @@
       btn1: "🍲 Soup / First Course",
       btn2: "🍛 Main Dish",
       btn3: "🥗 Strictly Vegetarian",
+      btn4: "🍰 Dessert / Baking",
       selectedMsg: "Great choice: ",
       promptMsg: "List 3 to 5 ingredients you currently have on hand:",
-      placeholder: "E.g., tofu, broccoli, mushrooms, rice...",
+      placeholders: {
+        soup: "E.g., chicken, potatoes, onion, noodles...",
+        main: "E.g., ground beef, pasta, tomatoes, garlic...",
+        vegetarian: "E.g., zucchini, tofu, rice, spinach...",
+        dessert: "E.g., apples, flour, eggs, cinnamon, cottage cheese..."
+      },
       waiting: "🥄 Cooking up ideas... Crafting 3 recipes (under 1 hour).",
       reset: "🔄 Choose another category",
       toggleBtn: "🇷🇺 Русский"
@@ -275,14 +287,15 @@
     chefName.innerText = ui[lang].name;
     statusLabel.innerText = ui[lang].status;
     toggleBtn.innerText = ui[lang].toggleBtn;
-    input.placeholder = ui[lang].placeholder;
+    input.placeholder = ui[lang].placeholders.main;
     input.disabled = true;
     sendBtn.disabled = true;
 
     renderBotMessage(ui[lang].welcome, [
       { label: ui[lang].btn1, action: 'soup' },
       { label: ui[lang].btn2, action: 'main' },
-      { label: ui[lang].btn3, action: 'vegetarian' }
+      { label: ui[lang].btn3, action: 'vegetarian' },
+      { label: ui[lang].btn4, action: 'dessert' }
     ]);
   }
 
@@ -291,6 +304,8 @@
     categoryLabel = label;
     renderUserMessage(label);
     renderBotMessage(`${ui[lang].selectedMsg} ${categoryLabel}.\n\n${ui[lang].promptMsg}`);
+    
+    input.placeholder = ui[lang].placeholders[type] || ui[lang].placeholders.main;
     input.disabled = false;
     sendBtn.disabled = false;
     input.focus();
@@ -307,15 +322,17 @@
 
     renderBotMessage(ui[lang].waiting);
 
-    let strictDietRule = "";
+    let extraInstruction = "";
     if (categoryKey === 'vegetarian') {
-      strictDietRule = "CRITICAL DIETARY RESTRICTION: The recipes MUST BE 100% STRICT VEGETARIAN. Absolutely NO meat, poultry, fish, seafood, gelatin, or animal broths allowed. Eggs and dairy are permitted only if requested, otherwise keep it plant-focused.";
+      extraInstruction = "CRITICAL: Recipes MUST BE STRICTLY VEGETARIAN. No meat, poultry, fish, seafood, gelatin, or animal broth.";
+    } else if (categoryKey === 'dessert') {
+      extraInstruction = "CRITICAL: Recipes MUST BE SWEET DESSERTS, PASTRIES, OR BAKED GOODS (e.g. cakes, pancakes, mug cakes, cookies, puddings).";
     }
 
     const systemPrompt = `You are Chef Oliver, a friendly, warm home-cooking expert.
-The user requested 3 recipes of category "${categoryLabel}" made from these ingredients: "${ingredients}".
+The user wants 3 recipes of category "${categoryLabel}" made from these ingredients: "${ingredients}".
 
-${strictDietRule}
+${extraInstruction}
 
 Strict guidelines:
 - Maximum cooking time for any recipe must be 60 minutes or less.
