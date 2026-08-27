@@ -20,7 +20,9 @@
       --border-subtle: #EFE9DF;
       --shadow-warm: 0 12px 32px rgba(92, 64, 45, 0.08);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg-cream);
@@ -33,6 +35,7 @@
       min-height: 100vh;
       padding: 16px;
     }
+
     .app-card {
       width: 100%;
       max-width: 620px;
@@ -45,6 +48,8 @@
       border: 1px solid var(--border-subtle);
       overflow: hidden;
     }
+
+    /* Верхняя панель */
     .app-header {
       padding: 18px 24px;
       border-bottom: 1px solid var(--border-subtle);
@@ -53,7 +58,13 @@
       align-items: center;
       background: #FAF7F2;
     }
-    .chef-badge { display: flex; align-items: center; gap: 12px; }
+
+    .chef-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .chef-avatar {
       width: 44px;
       height: 44px;
@@ -65,12 +76,14 @@
       font-size: 22px;
       border: 2px solid #DCE5D8;
     }
+
     .chef-info h1 {
       font-family: 'Playfair Display', serif;
       font-size: 18px;
       font-weight: 600;
       color: var(--text-main);
     }
+
     .chef-status {
       font-size: 12px;
       color: var(--olive);
@@ -79,7 +92,14 @@
       gap: 5px;
       font-weight: 500;
     }
-    .status-dot { width: 7px; height: 7px; background: var(--olive); border-radius: 50%; }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--olive);
+      border-radius: 50%;
+    }
+
     .lang-toggle {
       background: var(--surface);
       border: 1.5px solid var(--border-subtle);
@@ -89,7 +109,15 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
+      transition: all 0.2s;
     }
+
+    .lang-toggle:hover {
+      background: var(--olive-light);
+      border-color: var(--olive);
+    }
+
+    /* Чат */
     .chat-flow {
       flex: 1;
       padding: 20px;
@@ -98,28 +126,45 @@
       flex-direction: column;
       gap: 16px;
     }
-    .msg-row { display: flex; gap: 10px; align-items: flex-start; max-width: 88%; }
+
+    .msg-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      max-width: 88%;
+    }
+
     .msg-row.bot { align-self: flex-start; }
     .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+
     .msg-bubble {
       padding: 14px 18px;
       border-radius: 18px;
       font-size: 14.5px;
       line-height: 1.55;
-      white-space: pre-wrap;
     }
+
     .msg-row.bot .msg-bubble {
       background: #F8F5F0;
       color: var(--text-main);
       border-top-left-radius: 4px;
       border: 1px solid #ECE4D8;
     }
+
     .msg-row.user .msg-bubble {
       background: var(--terracotta);
       color: white;
       border-top-right-radius: 4px;
     }
-    .choice-group { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+    /* Кнопки выбора */
+    .choice-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
     .choice-btn {
       background: var(--surface);
       border: 1.5px solid var(--terracotta);
@@ -129,8 +174,15 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 13.5px;
+      transition: all 0.2s;
     }
-    .choice-btn:hover { background: var(--terracotta); color: white; }
+
+    .choice-btn:hover {
+      background: var(--terracotta);
+      color: white;
+    }
+
+    /* Поле ввода */
     .chat-bottom {
       padding: 16px 20px;
       border-top: 1px solid var(--border-subtle);
@@ -138,6 +190,7 @@
       display: flex;
       gap: 10px;
     }
+
     .food-input {
       flex: 1;
       padding: 12px 18px;
@@ -147,7 +200,14 @@
       font-size: 14.5px;
       font-family: inherit;
       background: #FAF8F5;
+      transition: border 0.2s;
     }
+
+    .food-input:focus {
+      border-color: var(--terracotta);
+      background: var(--surface);
+    }
+
     .submit-btn {
       background: var(--terracotta);
       color: white;
@@ -157,7 +217,13 @@
       border-radius: 14px;
       cursor: pointer;
       font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
     }
+
+    .submit-btn:hover { background: var(--terracotta-dark); }
     .submit-btn:disabled { background: #D9D2C7; cursor: not-allowed; }
   </style>
 </head>
@@ -327,8 +393,7 @@ Strict guidelines:
           { label: ui[lang].reset, action: 'reset' }
         ]);
       } else {
-        const errorText = data.error || (lang === 'ru' ? "Не удалось получить ответ" : "Failed to get response");
-        renderBotMessage(`⚠️ ${errorText}`);
+        renderBotMessage(lang === 'ru' ? "Не удалось связаться с шефом. Попробуйте еще раз." : "Could not reach the chef. Please try again.");
       }
     } catch (e) {
       chat.removeChild(chat.lastChild);
