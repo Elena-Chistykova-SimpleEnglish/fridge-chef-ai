@@ -267,7 +267,7 @@
         vegetarian: "Например: кабачок, тофу, рис, шпинат...",
         dessert: "Например: яблоки, мука, яйца, творог, сахар..."
       },
-      waiting: "🥄 Шеф уже на кухне! Составляю 3 вкусных рецепта с пряностями и секретами...",
+      waiting: "🥄 Шеф уже на кухне! Подбираю 3 рецепта со специями и секретами...",
       reset: "🔄 Выбрать другую категорию",
       toggleBtn: "🇬🇧 English"
     },
@@ -283,7 +283,7 @@
         vegetarian: "E.g., zucchini, tofu, rice, spinach...",
         dessert: "E.g., apples, flour, eggs, cinnamon, cottage cheese..."
       },
-      waiting: "🥄 Chef Oliver is on it! Composing 3 mouth-watering recipes with spices & tricks...",
+      waiting: "🥄 Chef Oliver is on it! Composing 3 recipes with spices & tips...",
       reset: "🔄 Choose another category",
       toggleBtn: "🇷🇺 Русский"
     }
@@ -399,28 +399,26 @@
 
     renderBotMessage(ui[lang].waiting);
 
-    let extraInstruction = "";
+    let dietRule = "";
     if (categoryKey === 'vegetarian') {
-      extraInstruction = "CRITICAL: The recipes MUST BE 100% STRICT VEGETARIAN. Absolutely NO meat, poultry, fish, seafood, gelatin, or animal broths.";
+      dietRule = "Category constraint: 100% vegetarian. No meat, poultry, seafood.";
     } else if (categoryKey === 'dessert') {
-      extraInstruction = "CRITICAL: The recipes MUST BE SWEET DESSERTS, PASTRIES, OR BAKED GOODS (e.g. cakes, soufflés, pancakes, cookies, creams).";
+      dietRule = "Category constraint: Sweet dessert or baking only.";
     }
 
-    const systemPrompt = `You are Chef Oliver, a passionate and creative culinary expert.
-Create 3 distinctly delicious recipes for the category "${categoryLabel}" based on: "${ingredients}".
+    const systemPrompt = `You are Chef Oliver. Give EXACTLY 3 recipes for "${categoryLabel}" using: "${ingredients}".
+${dietRule}
 
-${extraInstruction}
+Strict Rules:
+- All recipes <= 60 min.
+- Keep each recipe compact, punchy, and complete (no generic intros/outros).
+- Structure each of the 3 recipes like this:
+  1. **[Recipe Name]** (⏱️ Time)
+  2. 🌿 **Специи/Пряности:** (recommended herbs & spices)
+  3. 📝 **Шаги:** (2-3 concise bullet points)
+  4. 💡 **Секрет шефа:** (one-sentence tip)
 
-Mandatory Rules:
-- Maximum cooking time for each recipe: strictly <= 60 minutes.
-- SPICE & FLAVOR BOOST: Suggest aromatic herbs, spices, and seasonings (like smoked paprika, garlic, nutmeg, cinnamon, vanilla, citrus zest, rosemary, etc.) to enhance each dish.
-- Format for each recipe:
-  1. 🍳 Catchy Dish Title
-  2. ⏱️ Cooking Time (15-20 min / 30-40 min / 45-60 min)
-  3. 🌿 Spices & Seasoning accents
-  4. 📝 3-4 Clear, actionable steps
-  5. 💡 Chef's Secret Tip (a tiny trick for extraordinary taste)
-- Response Language: ${lang === 'ru' ? 'Russian' : 'English'}. Keep tone warm, appetizing, and complete every sentence.`;
+Language: ${lang === 'ru' ? 'Russian' : 'English'}. Ensure all 3 recipes are fully written out to the end.`;
 
     try {
       const res = await fetch("/api/chat", {
