@@ -18,39 +18,48 @@
       --text-main: #2D2A26;
       --text-muted: #736E65;
       --border-subtle: #EFE9DF;
-      --shadow-warm: 0 12px 32px rgba(92, 64, 45, 0.08);
+      --shadow-warm: 0 16px 40px rgba(45, 30, 20, 0.18);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-   body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: url('bg.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 16px;
-}
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-cream);
+      background-image: url('/bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-attachment: fixed;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
     .app-card {
       width: 100%;
       max-width: 620px;
       height: 92vh;
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-radius: 24px;
       display: flex;
       flex-direction: column;
       box-shadow: var(--shadow-warm);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid rgba(255, 255, 255, 0.7);
       overflow: hidden;
     }
+
     .app-header {
       padding: 18px 24px;
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #FAF7F2;
+      background: rgba(250, 247, 242, 0.85);
     }
     .chef-badge { display: flex; align-items: center; gap: 12px; }
     .chef-avatar {
@@ -88,7 +97,12 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
+      transition: background 0.2s;
     }
+    .lang-toggle:hover {
+      background: #F2ECE1;
+    }
+
     .chat-flow {
       flex: 1;
       padding: 20px;
@@ -118,6 +132,7 @@
       color: white;
       border-top-right-radius: 4px;
     }
+
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -166,6 +181,7 @@
       margin-top: 2px;
       font-weight: 400;
     }
+
     .action-btn-group { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
     .action-btn {
       background: var(--surface);
@@ -176,12 +192,14 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 13px;
+      transition: all 0.2s;
     }
     .action-btn:hover { background: var(--terracotta); color: white; }
+
     .chat-bottom {
       padding: 16px 20px;
       border-top: 1px solid var(--border-subtle);
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.95);
       display: flex;
       gap: 10px;
     }
@@ -204,7 +222,9 @@
       border-radius: 14px;
       cursor: pointer;
       font-size: 18px;
+      transition: background 0.2s;
     }
+    .submit-btn:hover:not(:disabled) { background: var(--terracotta-dark); }
     .submit-btn:disabled { background: #D9D2C7; cursor: not-allowed; }
   </style>
 </head>
@@ -259,7 +279,7 @@
       status: "На кухне",
       welcome: "Приветствую! Заглянули в холодильник и не знаете, что приготовить? С удовольствием подскажу пару домашних идей.\n\nКакое блюдо приготовим сегодня?",
       selectedMsg: "Отличный выбор: ",
-      promptMsg: "Напишите от 3 до 5 основных ингредиентов, которые есть под рукой:",
+      promptMsg: "Напишите от 3 до 5 основных продуктов, которые есть под рукой:",
       placeholders: {
         soup: "Например: курица, картофель, лук, вермишель...",
         main: "Например: фарш, макароны, томаты, лук...",
