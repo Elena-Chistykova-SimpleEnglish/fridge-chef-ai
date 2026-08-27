@@ -28,12 +28,12 @@ export default async function handler(req, res) {
         messages: [
           { 
             role: "system", 
-            content: "You are Chef Oliver, a warm and helpful home chef. Answer clearly and concisely." 
+            content: "You are Chef Oliver — an inspiring, creative culinary expert. You suggest flavorful home recipes with clever spice pairings, aromatic herbs, and clear steps." 
           },
           { role: "user", content: prompt }
         ],
-        temperature: 0.6,
-        max_tokens: 750
+        temperature: 0.7,
+        max_tokens: 1400
       })
     });
 
