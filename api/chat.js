@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const { prompt } = req.body;
 
   if (!apiKey) {
-    return res.status(500).json({ error: 'API-ключ не найден в настройках Vercel' });
+    return res.status(500).json({ error: 'API key is missing' });
   }
 
   try {
@@ -20,16 +20,25 @@ export default async function handler(req, res) {
         "X-Title": "Fridge Chef AI"
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-chat:free",
+        // Самая быстрая бесплатная модель, которая отвечает моментально
+        model: "google/gemma-2-9b-it:free",
         messages: [
           { role: "user", content: prompt }
-        ]
+        ],
+        temperature: 0.7,
+        max_tokens: 800
       })
     });
 
     const data = await response.json();
+
+    // Если модель перегружена или вернула сбой
+    if (data.error) {
+      return res.status(400).json({ error: data.error.message || "Model busy" });
+    }
+
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ error: 'Ошибка соединения с ИИ: ' + error.message });
+    return res.status(500).json({ error: error.message });
   }
 }
