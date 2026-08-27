@@ -263,11 +263,11 @@
       promptMsg: "Напишите от 3 до 5 основных ингредиентов, которые есть под рукой:",
       placeholders: {
         soup: "Например: курица, картофель, лук, вермишель...",
-        main: "Например: фарш, макароны, томаты, чеснок...",
-        vegetarian: "Например: кабачок, тофу, рис, шпинат...",
+        main: "Например: фарш, макароны, томаты, лук...",
+        vegetarian: "Например: кабачок, рис, шпинат, яйца...",
         dessert: "Например: яблоки, мука, яйца, творог, сахар..."
       },
-      waiting: "🥄 Шеф уже на кухне! Подбираю 3 рецепта со специями и секретами...",
+      waiting: "🥄 Шеф уже на кухне! Подбираю 3 доступных домашних рецепта...",
       reset: "🔄 Выбрать другую категорию",
       toggleBtn: "🇬🇧 English"
     },
@@ -279,11 +279,11 @@
       promptMsg: "List 3 to 5 ingredients you currently have on hand:",
       placeholders: {
         soup: "E.g., chicken, potatoes, onion, noodles...",
-        main: "E.g., ground beef, pasta, tomatoes, garlic...",
-        vegetarian: "E.g., zucchini, tofu, rice, spinach...",
+        main: "E.g., ground beef, pasta, tomatoes, onion...",
+        vegetarian: "E.g., zucchini, rice, spinach, eggs...",
         dessert: "E.g., apples, flour, eggs, cinnamon, cottage cheese..."
       },
-      waiting: "🥄 Chef Oliver is on it! Composing 3 recipes with spices & tips...",
+      waiting: "🥄 Chef Oliver is on it! Composing 3 cozy home recipes...",
       reset: "🔄 Choose another category",
       toggleBtn: "🇷🇺 Русский"
     }
@@ -401,24 +401,25 @@
 
     let dietRule = "";
     if (categoryKey === 'vegetarian') {
-      dietRule = "Category constraint: 100% vegetarian. No meat, poultry, seafood.";
+      dietRule = "Constraint: STRICTLY 100% vegetarian. No meat, poultry, fish, seafood.";
     } else if (categoryKey === 'dessert') {
-      dietRule = "Category constraint: Sweet dessert or baking only.";
+      dietRule = "Constraint: Sweet dessert, baked goods, or sweet pastry.";
     }
 
-    const systemPrompt = `You are Chef Oliver. Give EXACTLY 3 recipes for "${categoryLabel}" using: "${ingredients}".
+    const systemPrompt = `You are Chef Oliver, a practical home-cooking expert.
+Create EXACTLY 3 recipes of category "${categoryLabel}" using: "${ingredients}".
 ${dietRule}
 
 Strict Rules:
-- All recipes <= 60 min.
-- Keep each recipe compact, punchy, and complete (no generic intros/outros).
-- Structure each of the 3 recipes like this:
-  1. **[Recipe Name]** (⏱️ Time)
-  2. 🌿 **Специи/Пряности:** (recommended herbs & spices)
-  3. 📝 **Шаги:** (2-3 concise bullet points)
-  4. 💡 **Секрет шефа:** (one-sentence tip)
+- Time limit: <= 60 minutes.
+- SPICE & PANTRY RESTRICTION: ONLY use common, cheap household spices (e.g., black pepper, salt, paprika, garlic, onion, dill, parsley, bay leaf, cinnamon, vanilla). NEVER suggest rare/expensive ingredients like truffle oil, saffron, exotic herbs, or gourmet sauces.
+- Structure each recipe:
+  1. 🍳 **[Recipe Title]** (⏱️ Time)
+  2. 🧂 **Простые специи:** (2-3 accessible spices/herbs)
+  3. 📝 **Приготовление:** (2-3 clear, short steps)
+  4. 💡 **Совет:** (1 practical everyday home-cooking tip)
 
-Language: ${lang === 'ru' ? 'Russian' : 'English'}. Ensure all 3 recipes are fully written out to the end.`;
+Language: ${lang === 'ru' ? 'Russian' : 'English'}. Output all 3 recipes completely without breaking off.`;
 
     try {
       const res = await fetch("/api/chat", {
