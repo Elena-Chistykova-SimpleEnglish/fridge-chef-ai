@@ -20,9 +20,7 @@
       --border-subtle: #EFE9DF;
       --shadow-warm: 0 12px 32px rgba(92, 64, 45, 0.08);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg-cream);
@@ -35,7 +33,6 @@
       min-height: 100vh;
       padding: 16px;
     }
-
     .app-card {
       width: 100%;
       max-width: 620px;
@@ -48,8 +45,6 @@
       border: 1px solid var(--border-subtle);
       overflow: hidden;
     }
-
-    /* Верхняя панель */
     .app-header {
       padding: 18px 24px;
       border-bottom: 1px solid var(--border-subtle);
@@ -58,13 +53,7 @@
       align-items: center;
       background: #FAF7F2;
     }
-
-    .chef-badge {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .chef-badge { display: flex; align-items: center; gap: 12px; }
     .chef-avatar {
       width: 44px;
       height: 44px;
@@ -76,14 +65,12 @@
       font-size: 22px;
       border: 2px solid #DCE5D8;
     }
-
     .chef-info h1 {
       font-family: 'Playfair Display', serif;
       font-size: 18px;
       font-weight: 600;
       color: var(--text-main);
     }
-
     .chef-status {
       font-size: 12px;
       color: var(--olive);
@@ -92,14 +79,7 @@
       gap: 5px;
       font-weight: 500;
     }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--olive);
-      border-radius: 50%;
-    }
-
+    .status-dot { width: 7px; height: 7px; background: var(--olive); border-radius: 50%; }
     .lang-toggle {
       background: var(--surface);
       border: 1.5px solid var(--border-subtle);
@@ -109,15 +89,7 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
-      transition: all 0.2s;
     }
-
-    .lang-toggle:hover {
-      background: var(--olive-light);
-      border-color: var(--olive);
-    }
-
-    /* Чат */
     .chat-flow {
       flex: 1;
       padding: 20px;
@@ -126,63 +98,40 @@
       flex-direction: column;
       gap: 16px;
     }
-
-    .msg-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      max-width: 88%;
-    }
-
+    .msg-row { display: flex; gap: 10px; align-items: flex-start; max-width: 90%; }
     .msg-row.bot { align-self: flex-start; }
     .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
-
     .msg-bubble {
       padding: 14px 18px;
       border-radius: 18px;
       font-size: 14.5px;
       line-height: 1.55;
+      white-space: pre-wrap;
     }
-
     .msg-row.bot .msg-bubble {
       background: #F8F5F0;
       color: var(--text-main);
       border-top-left-radius: 4px;
       border: 1px solid #ECE4D8;
     }
-
     .msg-row.user .msg-bubble {
       background: var(--terracotta);
       color: white;
       border-top-right-radius: 4px;
     }
-
-    /* Кнопки выбора */
-    .choice-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
+    .choice-group { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
     .choice-btn {
       background: var(--surface);
       border: 1.5px solid var(--terracotta);
       color: var(--terracotta);
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 14px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 13.5px;
+      font-size: 13px;
       transition: all 0.2s;
     }
-
-    .choice-btn:hover {
-      background: var(--terracotta);
-      color: white;
-    }
-
-    /* Поле ввода */
+    .choice-btn:hover { background: var(--terracotta); color: white; }
     .chat-bottom {
       padding: 16px 20px;
       border-top: 1px solid var(--border-subtle);
@@ -190,7 +139,6 @@
       display: flex;
       gap: 10px;
     }
-
     .food-input {
       flex: 1;
       padding: 12px 18px;
@@ -200,14 +148,7 @@
       font-size: 14.5px;
       font-family: inherit;
       background: #FAF8F5;
-      transition: border 0.2s;
     }
-
-    .food-input:focus {
-      border-color: var(--terracotta);
-      background: var(--surface);
-    }
-
     .submit-btn {
       background: var(--terracotta);
       color: white;
@@ -217,13 +158,7 @@
       border-radius: 14px;
       cursor: pointer;
       font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
     }
-
-    .submit-btn:hover { background: var(--terracotta-dark); }
     .submit-btn:disabled { background: #D9D2C7; cursor: not-allowed; }
   </style>
 </head>
@@ -254,33 +189,36 @@
 
 <script>
   let lang = 'ru';
-  let category = '';
+  let categoryKey = '';
+  let categoryLabel = '';
 
   const ui = {
     ru: {
       name: "Шеф Оливер",
       status: "На кухне",
-      welcome: "Приветствую! Заглянули в холодильник и не знаете, что приготовить? С удовольствием подскажу пару домашних идей.\n\nС какого блюда начнём?",
+      welcome: "Приветствую! Заглянули в холодильник и не знаете, что приготовить? С удовольствием подскажу пару домашних идей.\n\nКакое блюдо приготовим?",
       btn1: "🍲 Первое блюдо",
       btn2: "🍛 Второе блюдо",
+      btn3: "🥗 Вегетарианское (строго)",
       selectedMsg: "Отличный выбор: ",
       promptMsg: "Напишите от 3 до 5 основных ингредиентов, которые есть под рукой:",
-      placeholder: "Например: куриное филе, картофель, лук, сливки...",
+      placeholder: "Например: тофу, брокколи, шампиньоны, рис...",
       waiting: "🥄 Уже нарезаем идеи... Подбираю 3 рецепта до 1 часа.",
-      reset: "🔄 Приготовить другое блюдо",
+      reset: "🔄 Выбрать другую категорию",
       toggleBtn: "🇬🇧 English"
     },
     en: {
       name: "Chef Oliver",
       status: "In the Kitchen",
-      welcome: "Hello! Peeking into your fridge wondering what to cook? Let me share a few cozy home recipes with you.\n\nWhat are we making today?",
+      welcome: "Hello! Peeking into your fridge wondering what to cook? Let me share a few cozy home recipes with you.\n\nWhat kind of dish would you like?",
       btn1: "🍲 Soup / First Course",
       btn2: "🍛 Main Dish",
+      btn3: "🥗 Strictly Vegetarian",
       selectedMsg: "Great choice: ",
       promptMsg: "List 3 to 5 ingredients you currently have on hand:",
-      placeholder: "E.g., chicken breast, potatoes, onion, cream...",
+      placeholder: "E.g., tofu, broccoli, mushrooms, rice...",
       waiting: "🥄 Cooking up ideas... Crafting 3 recipes (under 1 hour).",
-      reset: "🔄 Pick another dish",
+      reset: "🔄 Choose another category",
       toggleBtn: "🇷🇺 Русский"
     }
   };
@@ -343,14 +281,16 @@
 
     renderBotMessage(ui[lang].welcome, [
       { label: ui[lang].btn1, action: 'soup' },
-      { label: ui[lang].btn2, action: 'main' }
+      { label: ui[lang].btn2, action: 'main' },
+      { label: ui[lang].btn3, action: 'vegetarian' }
     ]);
   }
 
   function handleChoice(type, label) {
-    category = label;
+    categoryKey = type;
+    categoryLabel = label;
     renderUserMessage(label);
-    renderBotMessage(`${ui[lang].selectedMsg} ${category}.\n\n${ui[lang].promptMsg}`);
+    renderBotMessage(`${ui[lang].selectedMsg} ${categoryLabel}.\n\n${ui[lang].promptMsg}`);
     input.disabled = false;
     sendBtn.disabled = false;
     input.focus();
@@ -367,8 +307,16 @@
 
     renderBotMessage(ui[lang].waiting);
 
-    const systemPrompt = `You are Chef Oliver, a friendly, warm home-cooking expert. 
-The user wants exactly 3 recipes of category "${category}" made from: "${ingredients}".
+    let strictDietRule = "";
+    if (categoryKey === 'vegetarian') {
+      strictDietRule = "CRITICAL DIETARY RESTRICTION: The recipes MUST BE 100% STRICT VEGETARIAN. Absolutely NO meat, poultry, fish, seafood, gelatin, or animal broths allowed. Eggs and dairy are permitted only if requested, otherwise keep it plant-focused.";
+    }
+
+    const systemPrompt = `You are Chef Oliver, a friendly, warm home-cooking expert.
+The user requested 3 recipes of category "${categoryLabel}" made from these ingredients: "${ingredients}".
+
+${strictDietRule}
+
 Strict guidelines:
 - Maximum cooking time for any recipe must be 60 minutes or less.
 - Structure:
@@ -393,11 +341,12 @@ Strict guidelines:
           { label: ui[lang].reset, action: 'reset' }
         ]);
       } else {
-        renderBotMessage(lang === 'ru' ? "Не удалось связаться с шефом. Попробуйте еще раз." : "Could not reach the chef. Please try again.");
+        const errorText = data.error || (lang === 'ru' ? "Не удалось получить ответ" : "Failed to get response");
+        renderBotMessage(`⚠️ ${errorText}`);
       }
     } catch (e) {
       chat.removeChild(chat.lastChild);
-      renderBotMessage(lang === 'ru' ? "Ошибка сети. Проверьте подключение." : "Network issue. Please try again.");
+      renderBotMessage(lang === 'ru' ? "Ошибка сети. Попробуйте еще раз." : "Network issue. Please try again.");
     }
   }
 
