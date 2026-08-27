@@ -6,22 +6,30 @@ export default async function handler(req, res) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   const { prompt } = req.body;
 
+  if (!apiKey) {
+    return res.status(500).json({ error: 'API-ключ не найден в настройках Vercel' });
+  }
+
   try {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
+        "Authorization": "Bearer " + apiKey.trim(),
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://vercel.com",
+        "X-Title": "Fridge Chef AI"
       },
       body: JSON.stringify({
-        model: "openrouter/free",
-        messages: [{ role: "user", content: prompt }]
+        model: "deepseek/deepseek-chat:free",
+        messages: [
+          { role: "user", content: prompt }
+        ]
       })
     });
 
     const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ error: 'Ошибка соединения с ИИ' });
+    return res.status(500).json({ error: 'Ошибка соединения с ИИ: ' + error.message });
   }
 }
