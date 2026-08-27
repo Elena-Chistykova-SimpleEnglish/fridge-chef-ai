@@ -20,12 +20,11 @@ export default async function handler(req, res) {
         "X-Title": "Fridge Chef AI"
       },
       body: JSON.stringify({
-        // OpenRouter автоматически выберет первую доступную и быструю модель из списка:
+        // Ровно 3 самые стабильные бесплатные модели
         models: [
           "meta-llama/llama-3.2-3b-instruct:free",
           "google/gemma-2-9b-it:free",
-          "qwen/qwen-2.5-7b-instruct:free",
-          "deepseek/deepseek-chat:free"
+          "qwen/qwen-2.5-7b-instruct:free"
         ],
         messages: [
           { 
