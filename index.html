@@ -119,8 +119,6 @@
       color: white;
       border-top-right-radius: 4px;
     }
-
-    /* Сетка карточек с картинками */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -169,8 +167,6 @@
       margin-top: 2px;
       font-weight: 400;
     }
-
-    /* Обычные кнопки (например, "Выбрать заново") */
     .action-btn-group { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
     .action-btn {
       background: var(--surface);
@@ -183,7 +179,6 @@
       font-size: 13px;
     }
     .action-btn:hover { background: var(--terracotta); color: white; }
-
     .chat-bottom {
       padding: 16px 20px;
       border-top: 1px solid var(--border-subtle);
@@ -270,9 +265,9 @@
         soup: "Например: курица, картофель, лук, вермишель...",
         main: "Например: фарш, макароны, томаты, чеснок...",
         vegetarian: "Например: кабачок, тофу, рис, шпинат...",
-        dessert: "Например: яблоки, мука, яйца, корица, творог..."
+        dessert: "Например: яблоки, мука, яйца, творог, сахар..."
       },
-      waiting: "🥄 Уже нарезаем идеи... Подбираю 3 рецепта до 1 часа.",
+      waiting: "🥄 Шеф уже на кухне! Составляю 3 вкусных рецепта с пряностями и секретами...",
       reset: "🔄 Выбрать другую категорию",
       toggleBtn: "🇬🇧 English"
     },
@@ -288,7 +283,7 @@
         vegetarian: "E.g., zucchini, tofu, rice, spinach...",
         dessert: "E.g., apples, flour, eggs, cinnamon, cottage cheese..."
       },
-      waiting: "🥄 Cooking up ideas... Crafting 3 recipes (under 1 hour).",
+      waiting: "🥄 Chef Oliver is on it! Composing 3 mouth-watering recipes with spices & tricks...",
       reset: "🔄 Choose another category",
       toggleBtn: "🇷🇺 Русский"
     }
@@ -406,25 +401,26 @@
 
     let extraInstruction = "";
     if (categoryKey === 'vegetarian') {
-      extraInstruction = "CRITICAL: Recipes MUST BE STRICTLY VEGETARIAN. No meat, poultry, fish, seafood, gelatin, or animal broth.";
+      extraInstruction = "CRITICAL: The recipes MUST BE 100% STRICT VEGETARIAN. Absolutely NO meat, poultry, fish, seafood, gelatin, or animal broths.";
     } else if (categoryKey === 'dessert') {
-      extraInstruction = "CRITICAL: Recipes MUST BE SWEET DESSERTS, PASTRIES, OR BAKED GOODS (e.g. cakes, pancakes, mug cakes, cookies, puddings).";
+      extraInstruction = "CRITICAL: The recipes MUST BE SWEET DESSERTS, PASTRIES, OR BAKED GOODS (e.g. cakes, soufflés, pancakes, cookies, creams).";
     }
 
-    const systemPrompt = `You are Chef Oliver, a friendly, warm home-cooking expert.
-The user wants 3 recipes of category "${categoryLabel}" made from these ingredients: "${ingredients}".
+    const systemPrompt = `You are Chef Oliver, a passionate and creative culinary expert.
+Create 3 distinctly delicious recipes for the category "${categoryLabel}" based on: "${ingredients}".
 
 ${extraInstruction}
 
-Strict guidelines:
-- Maximum cooking time for any recipe must be 60 minutes or less.
-- Structure:
-  1. ⚡ Quick & Simple (15–20 min)
-  2. ⏳ Balanced Comfort (30–40 min)
-  3. 👨‍🍳 Chef's Choice (45–60 min, strictly not exceeding 1 hour)
-- Tone: warm, encouraging, clear.
-- Format per recipe: Title, Time estimate, Key steps.
-- Response Language: ${lang === 'ru' ? 'Russian' : 'English'}.`;
+Mandatory Rules:
+- Maximum cooking time for each recipe: strictly <= 60 minutes.
+- SPICE & FLAVOR BOOST: Suggest aromatic herbs, spices, and seasonings (like smoked paprika, garlic, nutmeg, cinnamon, vanilla, citrus zest, rosemary, etc.) to enhance each dish.
+- Format for each recipe:
+  1. 🍳 Catchy Dish Title
+  2. ⏱️ Cooking Time (15-20 min / 30-40 min / 45-60 min)
+  3. 🌿 Spices & Seasoning accents
+  4. 📝 3-4 Clear, actionable steps
+  5. 💡 Chef's Secret Tip (a tiny trick for extraordinary taste)
+- Response Language: ${lang === 'ru' ? 'Russian' : 'English'}. Keep tone warm, appetizing, and complete every sentence.`;
 
     try {
       const res = await fetch("/api/chat", {
