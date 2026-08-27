@@ -6,36 +6,22 @@ export default async function handler(req, res) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   const { prompt } = req.body;
 
-  if (!apiKey) {
-    return res.status(500).json({ 
-      error: 'Ошибка: переменная OPENROUTER_API_KEY не найдена в Vercel Settings -> Environment Variables' 
-    });
-  }
-
   try {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey.trim()}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://vercel.com",
-        "X-Title": "Fridge Chef AI"
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "google/gemma-2-9b-it:free",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7
+        model: "openrouter/free",
+        messages: [{ role: "user", content: prompt }]
       })
     });
 
     const data = await response.json();
-
-    if (data.error) {
-      return res.status(400).json({ error: 'OpenRouter: ' + (data.error.message || JSON.stringify(data.error)) });
-    }
-
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ error: 'Server error: ' + error.message });
+    return res.status(500).json({ error: 'Ошибка соединения с ИИ' });
   }
 }
